@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>易经查询</title>
-    <link href="/static/layui/css/layui.css" rel="stylesheet">
+    <link href="static/layui/css/layui.css" rel="stylesheet">
     <style>
         .centered-container {
             min-height: 100vh;
@@ -289,7 +289,7 @@
         </div>
     </div>
 
-    <script src="/static/layui/layui.js"></script>
+    <script src="static/layui/layui.js"></script>
     <script>
         layui.use(['jquery', 'layer', 'form'], function(){
             var $ = layui.jquery;
@@ -298,7 +298,7 @@
             window.$ = $;
             window.hexagramData = [];
             $.ajax({
-                url: '/static/json/list.json',
+                url: 'static/json/list.json',
                 type: 'GET',
                 dataType: 'json',
                 success: function(res) {
@@ -412,7 +412,7 @@
                 document.getElementById('formCard').classList.add('collapsed');
                 
                 $.ajax({
-                    url: '/' + matchingHexagram.jsname,
+                    url: matchingHexagram.jsname,
                     type: 'GET',
                     dataType: 'json',
                     success: function(res) {
