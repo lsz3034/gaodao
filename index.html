@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>易经查询</title>
-    <link href="static/layui/css/layui.css" rel="stylesheet">
+    <link href="/static/layui/css/layui.css" rel="stylesheet">
     <style>
         .centered-container {
             min-height: 100vh;
@@ -14,51 +15,51 @@
             background-color: #f2f2f2;
             padding: 20px;
         }
-        
+
         .form-card {
             background: white;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 500px;
             margin-bottom: 20px;
             transition: all 0.3s ease;
         }
-        
+
         .form-card.collapsed {
             padding: 15px;
             max-width: 200px;
             cursor: pointer;
         }
-        
+
         .form-card.collapsed .layui-form {
             display: none;
         }
-        
+
         .content-card {
             background: white;
             padding: 30px;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 900px;
             margin-top: 20px;
             display: none;
         }
-        
+
         .title-container {
             display: flex;
             align-items: center;
             justify-content: center;
             margin-bottom: 30px;
         }
-        
+
         .title {
             font-size: 24px;
             color: #333;
         }
-        
+
         .divination-btn {
             margin-left: 15px;
             padding: 4px 10px;
@@ -70,40 +71,40 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-        
+
         .divination-btn:hover {
             background: #00877a;
         }
-        
+
         .divination-content {
             padding: 30px;
             text-align: center;
             background: linear-gradient(135deg, #f5f5f5 0%, #fff 100%);
         }
-        
+
         .divination-steps {
             margin: 20px auto 30px;
             max-width: 280px;
             text-align: left;
         }
-        
+
         .divination-steps p {
             position: relative;
             padding: 15px 15px 15px 35px;
             margin-bottom: 15px;
             background: white;
             border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
             color: #333;
             font-size: 15px;
             transition: all 0.3s ease;
         }
-        
+
         .divination-steps p:hover {
             transform: translateX(5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        
+
         .divination-steps p:before {
             content: '';
             position: absolute;
@@ -115,7 +116,7 @@
             background: #009688;
             border-radius: 50%;
         }
-        
+
         .generate-btn {
             background: linear-gradient(145deg, #009688, #00796b);
             color: white;
@@ -125,35 +126,35 @@
             font-size: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,150,136,0.2);
+            box-shadow: 0 4px 15px rgba(0, 150, 136, 0.2);
             position: relative;
             overflow: hidden;
         }
-        
+
         .generate-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,150,136,0.3);
+            box-shadow: 0 6px 20px rgba(0, 150, 136, 0.3);
         }
-        
+
         .generate-btn:active {
             transform: translateY(1px);
         }
-        
+
         .generate-btn.generating {
             pointer-events: none;
             opacity: 0.8;
         }
-        
+
         .generate-btn.generating:after {
             content: '';
             position: absolute;
             width: 30px;
             height: 300px;
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.3);
             animation: sweep 1s infinite;
             transform: rotate(45deg);
         }
-        
+
         .search-btn {
             background: #009688;
             color: white;
@@ -163,51 +164,56 @@
             border-radius: 4px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 5px rgba(0,150,136,0.2);
+            box-shadow: 0 2px 5px rgba(0, 150, 136, 0.2);
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 45px;
         }
-        
+
         .search-btn:hover {
             background: #00877a;
-            box-shadow: 0 4px 8px rgba(0,150,136,0.3);
+            box-shadow: 0 4px 8px rgba(0, 150, 136, 0.3);
             transform: translateY(-1px);
         }
-        
+
         .layui-input-wrap {
             width: 100%;
         }
-        
+
         .hexagram-title {
             font-size: 28px;
             color: #009688;
             display: inline-block;
         }
-        
+
         .changing-line {
             font-size: 18px;
             color: #666;
             display: inline-block;
             margin-left: 15px;
         }
-        
+
         .content-text {
             line-height: 1.8;
             color: #333;
         }
-        
+
         @keyframes sweep {
-            0% { left: -100%; }
-            100% { left: 200%; }
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 200%;
+            }
         }
-        
+
         .layui-layer {
             border-radius: 12px !important;
         }
-        
+
         .layui-layer-title {
             background: #009688 !important;
             color: white !important;
@@ -219,6 +225,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="centered-container">
         <div class="form-card" id="formCard" onclick="expandForm(event)">
@@ -233,13 +240,9 @@
                         <div class="layui-input-prefix">
                             <i class="layui-icon layui-icon-up"></i>
                         </div>
-                        <input type="number" id="upperNumber" 
-                               lay-verify="required|upper" 
-                               placeholder="请输入上爻(1-8)" 
-                               lay-reqtext="请输入上爻" 
-                               min="1" max="8"
-                               oninput="validateNumber(this, 1, 8)"
-                               autocomplete="off" class="layui-input" lay-affix="clear">
+                        <input type="number" id="upperNumber" lay-verify="required|upper" placeholder="请输入上爻(1-8)"
+                            lay-reqtext="请输入上爻" min="1" max="8" oninput="validateNumber(this, 1, 8)" autocomplete="off"
+                            class="layui-input" lay-affix="clear">
                     </div>
                 </div>
 
@@ -248,13 +251,9 @@
                         <div class="layui-input-prefix">
                             <i class="layui-icon layui-icon-down"></i>
                         </div>
-                        <input type="number" id="lowerTrigram" 
-                               lay-verify="required|lower" 
-                               placeholder="请输入下爻(1-8)" 
-                               lay-reqtext="请输入下爻" 
-                               min="1" max="8"
-                               oninput="validateNumber(this, 1, 8)"
-                               autocomplete="off" class="layui-input" lay-affix="clear">
+                        <input type="number" id="lowerTrigram" lay-verify="required|lower" placeholder="请输入下爻(1-8)"
+                            lay-reqtext="请输入下爻" min="1" max="8" oninput="validateNumber(this, 1, 8)" autocomplete="off"
+                            class="layui-input" lay-affix="clear">
                     </div>
                 </div>
 
@@ -263,12 +262,9 @@
                         <div class="layui-input-prefix">
                             <i class="layui-icon layui-icon-edit"></i>
                         </div>
-                        <input type="number" id="changingLine" 
-                               lay-verify="changing" 
-                               placeholder="请输入变爻(1-6)" 
-                               min="1" max="6"
-                               oninput="validateNumber(this, 1, 6)"
-                               autocomplete="off" class="layui-input" lay-affix="clear">
+                        <input type="number" id="changingLine" lay-verify="changing" placeholder="请输入变爻(1-6)" min="1"
+                            max="6" oninput="validateNumber(this, 1, 6)" autocomplete="off" class="layui-input"
+                            lay-affix="clear">
                     </div>
                 </div>
 
@@ -289,48 +285,48 @@
         </div>
     </div>
 
-    <script src="static/layui/layui.js"></script>
+    <script src="/static/layui/layui.js"></script>
     <script>
-        layui.use(['jquery', 'layer', 'form'], function(){
+        layui.use(['jquery', 'layer', 'form'], function () {
             var $ = layui.jquery;
             var layer = layui.layer;
             var form = layui.form;
             window.$ = $;
             window.hexagramData = [];
             $.ajax({
-                url: 'static/json/list.json',
+                url: '/static/json2/list.json',
                 type: 'GET',
                 dataType: 'json',
-                success: function(res) {
+                success: function (res) {
                     window.hexagramData = res;
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     layer.msg('加载数据失败');
                 }
             });
             // 自定义验证规则
             form.verify({
-                upper: function(value, item) {
+                upper: function (value, item) {
                     if (value && (value < 1 || value > 8)) {
                         return '上爻数值必须在1-8之间';
                     }
                 },
-                lower: function(value, item) {
+                lower: function (value, item) {
                     if (value && (value < 1 || value > 8)) {
                         return '下爻数值必须在1-8之间';
                     }
                 },
-                changing: function(value, item) {
+                changing: function (value, item) {
                     if (value && (value < 1 || value > 6)) {
                         return '变爻数值必须在1-6之间';
                     }
                 }
             });
         });
-        
+
         function validateNumber(input, min, max) {
             input.value = input.value.replace(/[^\d]/g, '');
-            
+
             let num = parseInt(input.value);
             if (num < min || num > max) {
                 layer.tips(`请输入${min}-${max}之间的数字`, input, {
@@ -338,7 +334,7 @@
                     time: 2000
                 });
             }
-            
+
             if (num < min) {
                 input.value = min;
             }
@@ -376,7 +372,7 @@
             btn.classList.add('generating');
             btn.innerText = '卦象生成中...';
 
-            setTimeout(function() {
+            setTimeout(function () {
                 var upperNumber = Math.floor(Math.random() * 8) + 1;
                 var lowerTrigram = Math.floor(Math.random() * 8) + 1;
                 var changingLine = Math.floor(Math.random() * 6) + 1;
@@ -401,7 +397,7 @@
                 return;
             }
 
-            var matchingHexagram = window.hexagramData.find(function(h) {
+            var matchingHexagram = window.hexagramData.find(function (h) {
                 return h.upper_number === upperNumber && h.lower_trigram === lowerTrigram;
             });
 
@@ -410,19 +406,33 @@
                 document.getElementById('changingLineText').innerText = changingLine ? `第 ${changingLine} 爻变` : '';
                 document.getElementById('result').style.display = 'block';
                 document.getElementById('formCard').classList.add('collapsed');
-                
+
                 $.ajax({
-                    url: matchingHexagram.jsname,
+                    url: '/' + matchingHexagram.jsname,
                     type: 'GET',
                     dataType: 'json',
-                    success: function(res) {
-                        if (res && res.content) {
-                            document.getElementById('contentDisplay').innerHTML = res.content;
+                    success: function (res) {
+                        console.log(changingLine,res)
+                        
+                        //载入主卦
+                        var content=res[0]["raw_content"]
+
+                        //载入变卦
+                        for(q in res[0]["subsections"]){
+                            const changing_content=res[0]["subsections"][q]
+                            if(changing_content["title"]==changingLine){
+                                content=content+changing_content["raw_content"]
+                                break
+                            }
+                        }
+
+                        if (res && content) {
+                            document.getElementById('contentDisplay').innerHTML = content;
                         } else {
                             layer.msg('获取详细内容失败');
                         }
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         layer.msg('加载详细内容失败');
                     }
                 });
@@ -432,4 +442,5 @@
         }
     </script>
 </body>
+
 </html>
