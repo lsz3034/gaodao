@@ -408,7 +408,7 @@
                 document.getElementById('formCard').classList.add('collapsed');
 
                 $.ajax({
-                    url: '/' + matchingHexagram.jsname,
+                    url: matchingHexagram.jsname,
                     type: 'GET',
                     dataType: 'json',
                     success: function (res) {
