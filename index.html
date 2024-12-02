@@ -391,7 +391,7 @@
                     </svg>
                     <input type="number" class="form-input" id="changingLine" placeholder="请输入变爻 (1-6)" min="1" max="6">
                 </div>
-                <button class="search-btn" onclick="findHexagram()">
+                <button class="search-btn" onclick="findHexagram()" id="findHexagramBtn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="11" cy="11" r="8" />
@@ -426,6 +426,7 @@
     </div>
 
     <script>
+
         // 全局变量存储卦象数据
         let hexagramData = [];
 
@@ -435,13 +436,37 @@
             fetch('json/list.json')
                 .then(response => response.json())
                 .then(data => {
+
                     hexagramData = data;
+                    
+                    // 获取 get 参数
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const upperNumber = urlParams.get('up');
+                    const lowerTrigram = urlParams.get('low');
+                    const changingLine = urlParams.get('chang');
+
+                    // 确保三个参数都存在且不为null/空字符串
+                    if (upperNumber && lowerTrigram && changingLine) {
+                        document.getElementById('upperNumber').value = upperNumber;
+                        document.getElementById('lowerTrigram').value = lowerTrigram;
+                        document.getElementById('changingLine').value = changingLine;
+                        document.getElementById("findHexagramBtn").click();
+                    }
                 })
                 .catch(error => {
                     alert('加载数据失败');
                     console.error('Error:', error);
                 });
         });
+
+
+        function gx() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const upperNumber = urlParams.get('up');
+            const lowerTrigram = urlParams.get('low');
+            const changingLine = urlParams.get('chang');
+            return { "upperNumber": upperNumber, "lowerTrigram": lowerTrigram, "changingLine": changingLine }
+        }
 
         // 显示占卦模态框
         function showDivination() {
@@ -462,9 +487,8 @@
                 document.getElementById('upperNumber').value = upperNumber;
                 document.getElementById('lowerTrigram').value = lowerTrigram;
                 document.getElementById('changingLine').value = changingLine;
-
                 document.getElementById('divinationModal').style.display = 'none';
-                findHexagram();
+                window.location.href = "?up=" + upperNumber + "&low=" + lowerTrigram + "&chang=" + changingLine
                 btn.disabled = false;
                 btn.innerHTML = '点击摇卦';
             }, 1000);
@@ -485,6 +509,7 @@
 
         // 查询卦象
         async function findHexagram() {
+
             const upperNumber = parseInt(document.getElementById('upperNumber').value);
             const lowerTrigram = parseInt(document.getElementById('lowerTrigram').value);
             const changingLine = parseInt(document.getElementById('changingLine').value);
@@ -569,17 +594,17 @@
             validateNumber(this, 1, 6);
         });
     </script>
-    
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-570XV5T8LM"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-    
-      gtag('config', 'G-570XV5T8LM');
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-570XV5T8LM');
     </script>
-    
+
 </body>
 
 </html>
