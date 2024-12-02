@@ -528,7 +528,8 @@
                 document.getElementById('hexagramName').textContent = matchingHexagram.hexagram_name;
                 document.getElementById('changingLineText').textContent = changingLine ? `第 ${changingLine} 爻变` : '';
                 document.getElementById('result').style.display = 'block';
-                document.getElementById('formCard').classList.add('collapsed');
+                // 隐藏 卦象显示版
+                setTimeout("document.getElementById('formCard').classList.add('collapsed')",100);
 
                 try {
                     // 获取详细卦象内容
