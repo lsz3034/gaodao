@@ -4,397 +4,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords" content="高岛易断, 占卜解卦, 卦象快速查询">
-    <title>易经解卦</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f3f4f6;
-            min-height: 100vh;
-            padding: 2rem;
-        }
-
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .form-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-card.collapsed {
-            max-width: 300px;
-            padding: 1rem;
-            cursor: pointer;
-        }
-
-        .form-card.collapsed .form-content {
-            display: none;
-        }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-        }
-
-        .title {
-            font-size: 1.5rem;
-            color: #1f2937;
-            font-weight: 600;
-        }
-
-        .divination-btn {
-            background-color: #0d9488;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: background-color 0.2s ease;
-        }
-
-        .divination-btn:hover {
-            background-color: #0f766e;
-        }
-
-        .input-group {
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
-        }
-
-        .form-input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            border: 1px solid #e5e7eb;
-            border-radius: 6px;
-            font-size: 1rem;
-            transition: all 0.2s ease;
-        }
-
-        .form-input:focus {
-            outline: none;
-            border-color: #0d9488;
-            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
-        }
-
-        .search-btn {
-            width: 100%;
-            background-color: #0d9488;
-            color: white;
-            border: none;
-            padding: 0.75rem;
-            border-radius: 6px;
-            font-size: 1rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            transition: background-color 0.2s ease;
-        }
-
-        .search-btn:hover {
-            background-color: #0f766e;
-        }
-
-        .result-card {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            padding: 2rem;
-            display: none;
-        }
-
-        .result-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .hexagram-title {
-            font-size: 1.5rem;
-            color: #0d9488;
-            font-weight: 600;
-        }
-
-        .changing-line {
-            font-size: 1.125rem;
-            color: #4b5563;
-        }
-
-        .result-content {
-            color: #374151;
-            line-height: 1.75;
-            font-size: 1.125rem;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 400px;
-        }
-
-        .modal-title {
-            font-size: 1.25rem;
-            color: #1f2937;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .divination-steps {
-            margin-bottom: 2rem;
-        }
-
-        .divination-step {
-            background: #f9fafb;
-            padding: 1rem;
-            border-radius: 6px;
-            margin-bottom: 0.75rem;
-            position: relative;
-            padding-left: 2rem;
-        }
-
-        .divination-step::before {
-            content: "";
-            position: absolute;
-            left: 0.75rem;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 8px;
-            height: 8px;
-            background: #0d9488;
-            border-radius: 50%;
-        }
-
-        /* 卦象内容样式 */
-        .result-content {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.8;
-            color: #333;
-            padding: 2rem;
-        }
-
-        /* 标题样式 */
-        .result-content h2 {
-            font-size: 1.8rem;
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #eaeaea;
-            font-weight: 600;
-        }
-
-        .result-content h3 {
-            font-size: 1.5rem;
-            color: #34495e;
-            margin: 2rem 0 1rem 0;
-            padding-left: 1rem;
-            border-left: 4px solid #0d9488;
-        }
-
-        /* 段落样式 */
-        .result-content p {
-            margin: 0.8rem 0;
-            font-size: 1.05rem;
-            line-height: 1.8;
-        }
-
-        /* 特殊段落样式 */
-        .result-content p:first-of-type {
-            font-size: 1.2rem;
-            color: #1a365d;
-            font-weight: 500;
-        }
-
-        /* 原文样式 */
-        .result-content p:contains("原文"),
-        .result-content p:contains("象曰") {
-            color: #2d3748;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            background-color: #f7fafc;
-            border-radius: 4px;
-            margin: 1rem 0;
-        }
-
-        /* 解释部分样式 */
-        .result-content p:contains("解释"),
-        .result-content p:contains("断易天机"),
-        .result-content p:contains("北宋易学家"),
-        .result-content p:contains("台湾国学大儒") {
-            color: #4a5568;
-            font-weight: 500;
-            margin-top: 1.5rem;
-            border-top: 1px solid #edf2f7;
-            padding-top: 1rem;
-        }
-
-        /* 运势相关样式 */
-        .result-content p:contains("运势"),
-        .result-content p:contains("财运"),
-        .result-content p:contains("婚恋"),
-        .result-content p:contains("求名"),
-        .result-content p:contains("事业") {
-            background: #f8fafc;
-            padding: 0.8rem 1.2rem;
-            border-radius: 6px;
-            border-left: 3px solid #0d9488;
-            margin: 1rem 0;
-        }
-
-        /* 爻辞样式 */
-        .result-content p:contains("爻辞") {
-            font-size: 1.2rem;
-            color: #2d3748;
-            font-weight: 500;
-            margin: 1.5rem 0 1rem 0;
-        }
-
-        /* 变卦部分样式 */
-        .result-content p:contains("变卦") {
-            background: #edf2f7;
-            padding: 1rem;
-            border-radius: 6px;
-            margin: 1.5rem 0;
-        }
-
-        /* 哲学含义部分样式 */
-        .result-content p:contains("哲学含义") {
-            font-size: 1.1rem;
-            color: #2c5282;
-            font-weight: 500;
-            margin-top: 2rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #e2e8f0;
-        }
-
-        /* 移动端适配 */
-        @media (max-width: 768px) {
-            .result-content {
-                padding: 1rem;
-            }
-
-            .result-content h2 {
-                font-size: 1.5rem;
-            }
-
-            .result-content h3 {
-                font-size: 1.3rem;
-            }
-
-            .result-content p {
-                font-size: 1rem;
-            }
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .icon-spin {
-            animation: spin 1s linear infinite;
-        }
-
-        @media (max-width: 640px) {
-            body {
-                padding: 1rem;
-            }
-
-            .form-card {
-                padding: 1.5rem;
-            }
-
-            .title {
-                font-size: 1.25rem;
-            }
-        }
-    </style>
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="高岛易断,易经占卜,算卦,周易,占卜,卜筮,八卦,六十四卦,变爻,上爻,下爻,竹签占卜,在线算卦,免费算卦,易经解读">
+    <meta name="description" content="高岛易断在线占卜系统，提供专业的易经卦象查询、解读服务。使用竹签方法进行占卜，包含完整的卦象、变爻分析，帮助您了解事情发展趋势。">
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="易经查询 - 高岛易断">
+    <meta property="og:description" content="专业的高岛易断在线占卜系统，提供易经卦象查询及解读服务">
+    <meta property="og:type" content="website">
+    <!-- Additional SEO Tags -->
+    <meta name="author" content="易经在线">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://y.2016916.xyz/1">
+    <title>易经查询 - 高岛易断 | 专业易经占卜解读平台</title>
+    <link rel="stylesheet" href="static/styles.css">
 </head>
 
 <body>
+
+
+    <nav class="nav">
+        <div class="nav-links">
+            <a class="nav-link active">高岛易断</a>
+            <a href="2.html" class="nav-link">易经六爻</a>
+        </div>
+    </nav>
+
     <div class="container">
-        <div class="form-card" id="formCard">
-            <div class="header">
-                <h1 class="title">易经卦象查询</h1>
-                <button class="divination-btn" onclick="showDivination()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <div class="card">
+            <div class="card-header" onclick="toggleCard(this)">
+                <h3 class="card-title">高岛易断占卜指南</h3>
+                <span>▼</span>
+            </div>
+            <div class="card-content">
+                <div class="step">
+                    <span class="step-number">准备</span>
+                    <div>准备50根竹签，取出1根放一边，剩余49根分成左右两把</div>
+                </div>
+                <div class="step">
+                    <span class="step-number">上卦</span>
+                    <div>数左手中的那把，每8根一组取走，剩余的根数(1-8)即为上卦数</div>
+                </div>
+                <div class="step">
+                    <span class="step-number">下卦</span>
+                    <div>数右手中的那把，每8根一组取走，剩余的根数(1-8)即为下卦数</div>
+                </div>
+                <div class="step">
+                    <span class="step-number">变爻</span>
+                    <div>再数左手的那把，每6根一组取走，剩余的根数(1-6)即为变爻数</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" id="queryCard">
+            <div class="card-header" onclick="toggleCard(this)">
+                <h3 class="card-title">易经卦象查询</h3>
+                <span>▼</span>
+            </div>
+            <div class="card-content">
+                <div class="input-group">
+                    <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="m18 15-6-6-6 6" />
+                    </svg>
+                    <input type="number" class="input" id="upperNumber" placeholder="请输入上爻 (1-8)" min="1" max="8">
+                </div>
+                <div class="input-group">
+                    <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="m6 9 6 6 6-6" />
+                    </svg>
+                    <input type="number" class="input" id="lowerTrigram" placeholder="请输入下爻 (1-8)" min="1" max="8">
+                </div>
+                <div class="input-group">
+                    <svg class="input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                    </svg>
+                    <input type="number" class="input" id="changingLine" placeholder="请输入变爻 (1-6)" min="1" max="6">
+                </div>
+                <button class="btn btn-outline" onclick="showDivination()" style="margin-bottom: 1rem">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3" />
                     </svg>
                     摇卦
                 </button>
-            </div>
-            <div class="form-content">
-                <div class="input-group">
-                    <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="m18 15-6-6-6 6" />
-                    </svg>
-                    <input type="number" class="form-input" id="upperNumber" placeholder="请输入上爻 (1-8)" min="1" max="8">
-                </div>
-                <div class="input-group">
-                    <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="m6 9 6 6 6-6" />
-                    </svg>
-                    <input type="number" class="form-input" id="lowerTrigram" placeholder="请输入下爻 (1-8)" min="1" max="8">
-                </div>
-                <div class="input-group">
-                    <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                    </svg>
-                    <input type="number" class="form-input" id="changingLine" placeholder="请输入变爻 (1-6)" min="1" max="6">
-                </div>
-                <button class="search-btn" onclick="findHexagram()" id="findHexagramBtn">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <button class="btn" onclick="findHexagram()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8" />
                         <path d="m21 21-4.3-4.3" />
                     </svg>
@@ -403,70 +99,86 @@
             </div>
         </div>
 
-        <div class="result-card" id="result">
+        <div class="card result" id="result">
             <div class="result-header">
-                <span class="hexagram-title" id="hexagramName"></span>
-                <span class="changing-line" id="changingLineText"></span>
+                <span class="result-title" id="hexagramName"></span>
+                <span id="changingLineText"></span>
             </div>
-            <div class="result-content" id="contentDisplay"></div>
+            <div class="card-content" id="contentDisplay"></div>
         </div>
     </div>
 
     <div class="modal" id="divinationModal">
         <div class="modal-content">
-            <h2 class="modal-title">神圣的占卦</h2>
-            <div class="divination-steps">
-                <div class="divination-step">心中默想自己所求的事</div>
-                <div class="divination-step">屏气凝神</div>
-                <div class="divination-step">在间不容发之际点击下方按钮</div>
+            <h2 style="text-align: center; margin-bottom: 1.5rem; font-size: 1.25rem">神圣的占卜</h2>
+            <div style="margin-bottom: 1.5rem">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div>心中默想自己所求的事</div>
+                </div>
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div>屏气凝神</div>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div>在间不容发之际点击下方按钮</div>
+                </div>
             </div>
-            <button class="search-btn" id="generateBtn" onclick="generateNumbers()">
-                点击摇卦
-            </button>
+            <button class="btn" id="generateBtn" onclick="generateNumbers()">点击摇卦</button>
         </div>
     </div>
-
     <script>
+        // URL 参数处理
+        function getURLParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return {
+                upperNumber: urlParams.get('up'),
+                lowerTrigram: urlParams.get('low'),
+                changingLine: urlParams.get('chang')
+            };
+        }
 
-        // 全局变量存储卦象数据
-        let hexagramData = [];
-
-        // 页面加载完成后初始化
+        // 初始化页面
         document.addEventListener('DOMContentLoaded', function () {
-            // 加载卦象数据
-            fetch('json/list.json')
-                .then(response => response.json())
-                .then(data => {
+            const params = getURLParams();
+            if (params.upperNumber && params.lowerTrigram) {
+                document.getElementById('upperNumber').value = params.upperNumber;
+                document.getElementById('lowerTrigram').value = params.lowerTrigram;
+                if (params.changingLine) {
+                    document.getElementById('changingLine').value = params.changingLine;
+                }
+                findHexagram();
+            }
 
-                    hexagramData = data;
-                    
-                    // 获取 get 参数
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const upperNumber = urlParams.get('up');
-                    const lowerTrigram = urlParams.get('low');
-                    const changingLine = urlParams.get('chang');
+            // 绑定输入验证事件
+            document.getElementById('upperNumber').addEventListener('input', function () {
+                validateInput(this, 1, 8);
+            });
 
-                    // 确保三个参数都存在且不为null/空字符串
-                    if (upperNumber && lowerTrigram && changingLine) {
-                        document.getElementById('upperNumber').value = upperNumber;
-                        document.getElementById('lowerTrigram').value = lowerTrigram;
-                        document.getElementById('changingLine').value = changingLine;
-                        document.getElementById("findHexagramBtn").click();
-                    }
-                })
-                .catch(error => {
-                    alert('加载数据失败');
-                    console.error('Error:', error);
-                });
+            document.getElementById('lowerTrigram').addEventListener('input', function () {
+                validateInput(this, 1, 8);
+            });
+
+            document.getElementById('changingLine').addEventListener('input', function () {
+                validateInput(this, 1, 6);
+            });
+
+            // 点击模态框外部关闭
+            window.onclick = function (event) {
+                const modal = document.getElementById('divinationModal');
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            };
         });
 
-
-        function gx() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const upperNumber = urlParams.get('up');
-            const lowerTrigram = urlParams.get('low');
-            const changingLine = urlParams.get('chang');
-            return { "upperNumber": upperNumber, "lowerTrigram": lowerTrigram, "changingLine": changingLine }
+        // 卡片展开/收起功能
+        function toggleCard(header) {
+            const card = header.parentElement;
+            card.classList.toggle('collapsed');
+            const arrow = header.querySelector('span');
+            arrow.style.transform = card.classList.contains('collapsed') ? 'rotate(-90deg)' : '';
         }
 
         // 显示占卦模态框
@@ -478,7 +190,7 @@
         function generateNumbers() {
             const btn = document.getElementById('generateBtn');
             btn.disabled = true;
-            btn.innerHTML = '<svg class="icon-spin" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/></svg> 卦象生成中...';
+            btn.innerHTML = '<svg class="icon-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/></svg> 卦象生成中...';
 
             setTimeout(() => {
                 const upperNumber = Math.floor(Math.random() * 8) + 1;
@@ -488,29 +200,32 @@
                 document.getElementById('upperNumber').value = upperNumber;
                 document.getElementById('lowerTrigram').value = lowerTrigram;
                 document.getElementById('changingLine').value = changingLine;
+
                 document.getElementById('divinationModal').style.display = 'none';
-                window.location.href = "?up=" + upperNumber + "&low=" + lowerTrigram + "&chang=" + changingLine
+                findHexagram();
+
                 btn.disabled = false;
                 btn.innerHTML = '点击摇卦';
             }, 1000);
         }
 
-        // 验证输入数字范围
-        function validateNumber(input, min, max) {
-            input.value = input.value.replace(/[^\d]/g, '');
-            let num = parseInt(input.value);
+        // 输入验证
+        function validateInput(input, min, max) {
+            let value = input.value.replace(/\D/g, '');
+            let num = parseInt(value);
 
-            if (num < min || num > max) {
-                alert(`请输入${min}-${max}之间的数字`);
+            if (isNaN(num)) {
+                input.value = '';
+                return;
             }
 
-            if (num < min) input.value = min;
-            if (num > max) input.value = max;
+            if (num < min) num = min;
+            if (num > max) num = max;
+            input.value = num;
         }
 
         // 查询卦象
         async function findHexagram() {
-
             const upperNumber = parseInt(document.getElementById('upperNumber').value);
             const lowerTrigram = parseInt(document.getElementById('lowerTrigram').value);
             const changingLine = parseInt(document.getElementById('changingLine').value);
@@ -520,93 +235,49 @@
                 return;
             }
 
-            // 查找匹配的卦象
-            const matchingHexagram = hexagramData.find(h =>
-                h.upper_number === upperNumber && h.lower_trigram === lowerTrigram
-            );
+            try {
+                const response = await fetch(`static/y/${upperNumber}-${lowerTrigram}.json`);
 
-            if (matchingHexagram) {
-                document.getElementById('hexagramName').textContent = matchingHexagram.hexagram_name;
-                document.getElementById('changingLineText').textContent = changingLine ? `第 ${changingLine} 爻变` : '';
-                document.getElementById('result').style.display = 'block';
-                // 隐藏 卦象显示版
-                setTimeout("document.getElementById('formCard').classList.add('collapsed')",100);
-
-                try {
-                    // 获取详细卦象内容
-                    const response = await fetch(matchingHexagram.jsname);
-                    const data = await response.json();
-
-                    // 处理主卦内容
-                    let content = data[0].raw_content;
-
-                    // 处理变爻内容
-                    if (changingLine) {
-                        for (const subsection of data[0].subsections) {
-                            if (subsection.title == changingLine) {
-                                content += subsection.raw_content;
-                                break;
-                            }
-                        }
-                    }
-
-                    document.getElementById('contentDisplay').innerHTML = content;
-                } catch (error) {
-                    alert('加载详细内容失败');
-                    console.error('Error:', error);
+                if (!response.ok) {
+                    throw new Error('未找到对应的卦象');
                 }
-            } else {
-                alert('未找到对应的卦象');
+
+                const data = await response.json();
+
+                // 显示结果并收起查询表单
+                const resultCard = document.getElementById('result');
+                resultCard.style.display = 'block';
+                document.getElementById('queryCard').classList.add('collapsed');
+
+                // 显示卦名和变爻信息
+                document.getElementById('hexagramName').textContent = data.name || '';
+                document.getElementById('changingLineText').textContent = changingLine ? `变爻${changingLine}` : '';
+
+                // 处理主卦和变爻内容
+                let content = data[0] || '';
+                if (changingLine && data[changingLine]) {
+                    content += data[changingLine];
+                }
+
+                document.getElementById('contentDisplay').innerHTML = content;
+
+                // 更新URL参数但不刷新页面
+                const newUrl = `${window.location.pathname}?up=${upperNumber}&low=${lowerTrigram}${changingLine ? `&chang=${changingLine}` : ''}`;
+                window.history.pushState({ path: newUrl }, '', newUrl);
+
+            } catch (error) {
+                alert(error.message || '加载详细内容失败');
+                console.error('Error:', error);
             }
         }
 
-        // 展开表单
-        function expandForm(event) {
-            const formCard = document.getElementById('formCard');
-            if (event.target.id === 'formCard' || event.target.className === 'collapsed-title') {
-                formCard.classList.remove('collapsed');
-            }
-        }
-
-        // 事件监听器设置
-        document.getElementById('formCard').addEventListener('click', function (e) {
-            if (this.classList.contains('collapsed')) {
-                this.classList.remove('collapsed');
-            }
-        });
-
-        // 点击模态框外部关闭
-        window.onclick = function (event) {
-            const modal = document.getElementById('divinationModal');
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        // 为输入框添加验证
-        document.getElementById('upperNumber').addEventListener('input', function () {
-            validateNumber(this, 1, 8);
-        });
-
-        document.getElementById('lowerTrigram').addEventListener('input', function () {
-            validateNumber(this, 1, 8);
-        });
-
-        document.getElementById('changingLine').addEventListener('input', function () {
-            validateNumber(this, 1, 6);
-        });
-    </script>
-
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-570XV5T8LM"></script>
-    <script>
+        // Google Analytics
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'G-570XV5T8LM');
-    </script>
 
+    </script>
 </body>
 
 </html>
