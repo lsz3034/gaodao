@@ -22,7 +22,7 @@
 <body>
     <nav class="nav">
         <div class="nav-links">
-            <a href="index.html" class="nav-link">高岛易断</a>
+            <a href="/1" class="nav-link">高岛易断</a>
             <a class="nav-link active">易经六爻</a>
         </div>
     </nav>
@@ -246,8 +246,23 @@
             }
         }
 
-        // 获取卦象数据
+        /**
+         * 获取卦象数据并清空输出区域
+         * @param upper - 上卦数字
+         * @param lower - 下卦数字
+         * @returns {Promise} 返回卦象数据
+         */
         async function fetchHexagramData(upper, lower) {
+            // 获取输出元素
+            const yaoOutput = document.getElementById('yao-output');
+            
+            // 清空内容并隐藏元素
+            if (yaoOutput) {
+                yaoOutput.innerHTML = '';
+                yaoOutput.style.display = 'none';
+            }
+            
+            // 获取卦象数据
             const response = await fetch(`static/y/${upper}-${lower}.json`);
             if (!response.ok) throw new Error('未找到对应的卦象');
             return await response.json();
@@ -255,29 +270,63 @@
 
         // 处理并显示结果
         async function processAndDisplayResults(data, changingLines, yaoNumbers, upperTrigram, lowerTrigram) {
-            let resultText = `<a href='javascript:showYaoContent(0)'>主卦 ${data.name}</a>`;
-            gua_content[0] = data[0];
+            try {
+                // Initialize result text and store main hexagram content
+                let resultText = `<a href='javascript:showYaoContent(0)'>主卦 ${data.name || '未知卦象'}</a>`;
+                gua_content[0] = data[0] || '';
 
-            if (changingLines.length > 0) {
-                // 计算变卦
-                const derivedYao = calculateDerivedHexagram(yaoResults);
-                const derivedUpper = TRIGRAMS[derivedYao.slice(0, 3).join('')];
-                const derivedLower = TRIGRAMS[derivedYao.slice(3, 6).join('')];
+                // Handle changing lines if they exist
+                if (changingLines && changingLines.length > 0) {
+                    // Get the current yao configuration
+                    const currentYao = [];
+                    for (let i = 0; i < 6; i++) {
+                        const positiveCount = parseInt(document.getElementById(`positive${6-i}`).value) || 0;
+                        // Convert to binary representation (1 for yang, 0 for yin)
+                        currentYao[i] = positiveCount > 1 ? '1' : '0';
+                    }
 
-                // 获取变卦数据
-                const derivedData = await fetchHexagramData(derivedUpper, derivedLower);
+                    // Calculate derived hexagram
+                    const derivedYao = currentYao.map((yao, index) => {
+                        // If this position has a changing line, flip the value
+                        return changingLines.includes(6 - index) ? (yao === '1' ? '0' : '1') : yao;
+                    });
 
-                // 处理变爻内容
-                gua_content[1] = processChangingLines(data, changingLines);
-                gua_content[2] = derivedData[0];
+                    // Split into upper and lower trigrams
+                    const derivedUpper = TRIGRAMS[derivedYao.slice(0, 3).join('')];
+                    const derivedLower = TRIGRAMS[derivedYao.slice(3, 6).join('')];
 
-                resultText += ` ; <a href='javascript:showYaoContent(1)'>变爻 ${changingLines.join(',')}</a>`;
-                resultText += ` ; <a href='javascript:showYaoContent(2)'>变卦 ${derivedData.name}</a>`;
+                    try {
+                        // Fetch the derived hexagram data
+                        const derivedData = await fetchHexagramData(derivedUpper, derivedLower);
+
+                        // Process changing lines content
+                        const changingLinesContent = changingLines
+                            .map(lineNum => data[lineNum])
+                            .filter(content => content != null)
+                            .join('<br/><hr/><br/>');
+
+                        // Store changing lines and derived hexagram content
+                        gua_content[1] = changingLinesContent;
+                        gua_content[2] = derivedData[0] || '';
+
+                        // Add changing lines and derived hexagram to result text
+                        resultText += ` ; <a href='javascript:showYaoContent(1)'>变爻 ${changingLines.join(',')}</a>`;
+                        resultText += ` ; <a href='javascript:showYaoContent(2)'>变卦 ${derivedData.name || '未知卦象'}</a>`;
+                    } catch (error) {
+                        console.error('Error fetching derived hexagram:', error);
+                        resultText += ' (无法加载变卦信息)';
+                    }
+                }
+
+                // Update the display with the results
+                updateDisplay(resultText, yaoNumbers);
+
+            } catch (error) {
+                console.error('Error in processAndDisplayResults:', error);
+                updateDisplay('计算卦象时出现错误，请重试', yaoNumbers);
             }
-
-            // 更新显示
-            updateDisplay(resultText, yaoNumbers);
         }
+
 
         // 计算变卦
         function calculateDerivedHexagram(yaoResults) {
@@ -309,6 +358,31 @@
             const yaoOutput = document.getElementById('yao-output');
             yaoOutput.style.display = 'block';
             yaoOutput.innerHTML = gua_content[type];
+        }
+
+        /**
+         * 切换卡片内容的显示/隐藏状态
+         * @param header - 卡片的头部元素，必须包含 .toggle-icon 子元素并且其后有内容元素
+         */
+        function toggleCard(header) {
+            // 获取头部对应的内容区域（header 的下一个兄弟元素）
+            const content = header.nextElementSibling;
+            
+            // 获取切换图标元素（箭头）
+            const icon = header.querySelector('.toggle-icon');
+            
+            // 判断内容区域当前是隐藏还是显示状态
+            if (content.style.display === 'none' || !content.style.display) {
+                // 如果是隐藏状态，则显示内容
+                content.style.display = 'block';
+                // 将图标改为向下箭头
+                icon.textContent = '▼';
+            } else {
+                // 如果是显示状态，则隐藏内容
+                content.style.display = 'none';
+                // 将图标改为向右箭头
+                icon.textContent = '▶';
+            }
         }
     </script>
 </body>
