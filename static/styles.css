@@ -84,6 +84,7 @@ body {
     box-shadow: var(--shadow);
     margin-bottom: 1.5rem;
     overflow: hidden;
+    padding: 0.75rem;
 }
 
 .card-header {
@@ -209,6 +210,11 @@ body {
     font-size: 1.5rem;
     color: var(--primary);
     font-weight: 600;
+}
+
+.result-number{
+    color: var(--text-secondary);
+    line-height: 1.6;
 }
 
 .result-info {
