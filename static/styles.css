@@ -286,6 +286,19 @@ body {
     display: none;
 }
 
+.card-header {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.toggle-icon {
+    margin-right: 8px;
+}
+
+.card-header:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
 
 /* Animations */
 @keyframes spin {
