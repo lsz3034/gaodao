@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>卦象解读</title>
+  <style>
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: #e9eff4;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 680px;
+      background: #ffffff;
+      margin: 1.5em auto;
+      padding: 1.5em;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-top: 0;
+      font-size: 2em;
+    }
+    h2, h3 {
+      color: #34495e;
+      margin-bottom: 0.5em;
+    }
+    .copy-btn {
+      font-size: 1em;
+      margin-left: 0.5em;
+      cursor: pointer;
+      background: none;
+      border: none;
+      vertical-align: middle;
+      color: #888;
+    }
+    .copy-btn:hover {
+      color: #000;
+    }
+    .copy-btn::after {
+      content: "\1F4CB"; /* 📋 */
+      font-size: 1.1em;
+    }
+    section {
+      margin-bottom: 1.2em;
+    }
+    .nav-back {
+      display: inline-block;
+      margin: 1em 1em 0 1em;
+      font-size: 1.2em;
+      color: #888;
+      text-decoration: none;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+    }
+    .nav-back::before {
+      content: "\2190"; /* ← */
+      margin-right: 0.4em;
+    }
+    .nav-back:hover {
+      color: #2c3e50;
+      background: transparent;
+    }
+    p {
+      color: #2c3e50;
+      line-height: 1.6em;
+      margin-top: 0.4em;
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="nav-back" title="返回首页"></a>
+  <div class="container">
+    <h1 id="title">
+      卦象信息
+      <button class="copy-btn" onclick="copyText()" title="复制全部"></button>
+    </h1>
+    <section id="main"></section>
+    <section id="change"></section>
+  </div>
+
+  <script>
+    function getParam(name) {
+      return new URLSearchParams(window.location.search).get(name);
+    }
+    const a = getParam('a');
+    const b = getParam('b');
+    const c = getParam('c');
+
+    function copyText() {
+      const text = document.getElementById('title').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("已复制内容");
+      });
+    }
+
+    if (a && b && c) {
+      fetch(`static/gaodao_json/${a}-${b}-${c}.json`)
+        .then(r => r.json())
+        .then(data => {
+          document.getElementById('title').innerHTML = `
+            ${data.gname} ${data.title} 变为 ${data.bgtitle} 卦
+            <button class="copy-btn" onclick="copyText()" title="复制全部"></button>
+          `;
+          document.getElementById('main').innerHTML = `
+            <h2>主卦：${data.gname}</h2>
+            <p><strong>卦辞：</strong>${data.gcontent}</p>
+            <h3>变爻：${data.title}</h3>
+            <p>${data.content}</p>
+          `;
+          document.getElementById('change').innerHTML = `
+            <h2>变卦：${data.bgtitle}</h2>
+            <p>${data.bgcontent}</p>
+          `;
+        })
+        .catch(() => {
+          document.getElementById('title').innerText = '未找到对应卦象';
+        });
+    } else {
+      document.getElementById('title').innerText = '参数缺失';
+    }
+  </script>
+</body>
+</html>
