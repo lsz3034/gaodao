@@ -3,163 +3,210 @@
 <head>
 <meta charset="utf-8">
 <title>高岛易断占卜</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body {
-  font-family: "Helvetica Neue", Arial, sans-serif;
-  background: #e9eff4;
-  margin: 0;
-  padding: 0;
-}
-.container {
-  max-width: 600px;
-  background: #ffffff;
-  margin: 3em auto;
-  padding: 2em;
-  border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
-h1 {
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 0;
-}
-label {
-  display: block;
-  margin-bottom: 1em;
-  color: #34495e;
-}
-input {
-  width: 4em;
-  padding: 0.3em;
-  font-size: 1em;
-  margin-left: 1em;
-}
-.button-group {
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  margin-top: 2em;
-}
-button {
-  padding: 0.8em 1.5em;
-  font-size: 1em;
-  border: none;
-  border-radius: 5px;
-  background-color: #2980b9;
-  color: white;
-  cursor: pointer;
-  transition: background 0.3s;
-  width: 100%;
-}
-button:hover {
-  background-color: #1f5f8b;
-}
-.instructions {
-  background: #f0f6fa;
-  border: 1px solid #c9d6e3;
-  padding: 1.2em;
-  border-radius: 8px;
-  margin-bottom: 2em;
-  color: #2c3e50;
-}
-.modal {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-  display: none;
-}
-.modal-content {
-  background: white;
-  padding: 2em;
-  border-radius: 10px;
-  text-align: center;
-  max-width: 400px;
-  animation: fadeIn 0.6s;
-}
-.fade-text {
-  opacity: 0;
-  transition: opacity 1s ease-in;
-  margin-bottom: 1em;
-  font-size: 1.1em;
-  color: #2c3e50;
-}
-#oracleLoading {
-  display: none;
-  margin-top: 1em;
-  font-style: italic;
-  color: #888;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
+  body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background: #e9eff4;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  .container {
+    max-width: 600px;
+    background: #ffffff;
+    margin: 2em auto;
+    padding: 2em;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+  h1 {
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 0;
+  }
+  .instructions {
+    background: #f0f6fa;
+    border: 1px solid #c9d6e3;
+    padding: 1.5em;
+    border-radius: 8px;
+    margin-bottom: 2em;
+    color: #2c3e50;
+  }
+  .instructions h2 { margin-top: 0; }
+  label {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+    color: #34495e;
+  }
+  label span { width: 80px; }
+  input {
+    flex: 1;
+    padding: 0.5em;
+    font-size: 1em;
+    border: 1px solid #c9d6e3;
+    border-radius: 4px;
+  }
+  .button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    margin-top: 1.5em;
+  }
+  button {
+    padding: 0.8em;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    background-color: #2980b9;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s;
+    width: 100%;
+  }
+  button:hover { background-color: #1f5f8b; }
+  .modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .modal.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .modal-content {
+    background: white;
+    padding: 2em;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    animation: fadeIn 0.6s;
+    position: relative;
+  }
+  .modal-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    color: #888;
+  }
+  .modal-close:hover { color: #333; }
+  .fade-text {
+    opacity: 0;
+    transition: opacity 1s ease-in;
+    margin-bottom: 1em;
+    font-size: 1.1em;
+    color: #2c3e50;
+  }
+  #oracleLoading {
+    display: none;
+    margin-top: 1em;
+    font-style: italic;
+    color: #888;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>高岛易断占卜</h1>
-  <div class="instructions">
-    <h2>占卜起卦时的心法</h2>
-    <h3>1. 准备</h3>
-    <ol>
-      <li>准备50根竹签，取出1根放一边，剩余49根分成左右两把</li>
-      <li>数左手中的那把，每8根一组取走，剩余的根数(1-8)即为上卦数</li>
-      <li>数右手中的那把，每8根一组取走，剩余的根数(1-8)即为下卦数</li>
-      <li>再次数左手的那把，每6根一组取走，剩余的根数(1-6)即为变爻数</li>
-    </ol>
+  <div class="container">
+    <h1>高岛易断占卜</h1>
+    <div class="instructions">
+      <h2>占卜起卦时的心法</h2>
+      <h3>1. 准备</h3>
+      <ol>
+        <li>准备50根竹签，取出1根放一边，剩余49根分成左右两把</li>
+        <li>数左手中的那把，每8根一组取走，剩余的根数(1-8)即为上卦数</li>
+        <li>数右手中的那把，每8根一组取走，剩余的根数(1-8)即为下卦数</li>
+        <li>再次数左手的那把，每6根一组取走，剩余的根数(1-6)即为变爻数</li>
+      </ol>
+    </div>
+    <div>
+      <label><span>主卦:</span><input id="num1" type="number" min="1" max="8" placeholder="1-8"></label>
+      <label><span>变爻:</span><input id="num2" type="number" min="1" max="8" placeholder="1-8"></label>
+      <label><span>变卦:</span><input id="num3" type="number" min="1" max="6" placeholder="1-6"></label>
+    </div>
+    <div class="button-group">
+      <button id="showRitual">神圣的占卜</button>
+      <button id="goBtn">直接占卜</button>
+    </div>
   </div>
-  <div>
-    <label>主卦(1-8): <input id="num1" type="number" min="1" max="8"></label>
-    <label>变爻(1-8): <input id="num2" type="number" min="1" max="8"></label>
-    <label>变卦(1-6): <input id="num3" type="number" min="1" max="6"></label>
-  </div>
-  <div class="button-group">
-    <button id="showRitual">神圣的占卜</button>
-    <button id="goBtn">直接占卜</button>
-  </div>
-</div>
 
-<div class="modal" id="ritualModal">
-  <div class="modal-content">
-    <div class="fade-text" id="step1">心中默想自己所求的事……</div>
-    <div class="fade-text" id="step2">屏气凝神……</div>
-    <div class="fade-text" id="step3">在间不容发之际，点击下方按钮……</div>
-    <button id="startBtn" style="display:none;margin-top:1em;">启请天地，赐予启示</button>
-    <div id="oracleLoading">正在获取神的启示……</div>
+  <div class="modal" id="ritualModal">
+    <div class="modal-content">
+      <button class="modal-close" id="closeModal">×</button>
+      <div class="fade-text" id="step1">心中默想自己所求的事……</div>
+      <div class="fade-text" id="step2">屏气凝神……</div>
+      <div class="fade-text" id="step3">在间不容发之际，点击下方按钮……</div>
+      <button id="startBtn" style="display:none; margin-top:1em;">启请天地，赐予启示</button>
+      <div id="oracleLoading">正在获取神的启示……</div>
+    </div>
   </div>
-</div>
 
 <script>
-function rand(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+function validateInputs() {
+  const a = parseInt(document.getElementById('num1').value, 10);
+  const b = parseInt(document.getElementById('num2').value, 10);
+  const c = parseInt(document.getElementById('num3').value, 10);
+  let valid = true;
+  if (!(a >= 1 && a <= 8)) {
+    alert('主卦数必须为1至8之间的整数');
+    document.getElementById('num1').value = '';
+    valid = false;
+  }
+  if (!(b >= 1 && b <= 8)) {
+    alert('变爻数必须为1至8之间的整数');
+    document.getElementById('num2').value = '';
+    valid = false;
+  }
+  if (!(c >= 1 && c <= 6)) {
+    alert('变卦数必须为1至6之间的整数');
+    document.getElementById('num3').value = '';
+    valid = false;
+  }
+  return valid;
 }
+
 function redirectIfReady() {
-  const a = document.getElementById('num1').value;
-  const b = document.getElementById('num2').value;
-  const c = document.getElementById('num3').value;
-  if (a && b && c) {
+  if (validateInputs()) {
+    const a = document.getElementById('num1').value;
+    const b = document.getElementById('num2').value;
+    const c = document.getElementById('num3').value;
     window.location.href = `result.html?a=${a}&b=${b}&c=${c}`;
   }
 }
+
 document.getElementById('startBtn').addEventListener('click', () => {
+  // 在自动生成模式中，无需额外验证
   document.getElementById('startBtn').style.display = 'none';
   document.getElementById('oracleLoading').style.display = 'block';
   const inputs = [
-    { el: document.getElementById('num1'), range: [1, 8] },
-    { el: document.getElementById('num2'), range: [1, 8] },
-    { el: document.getElementById('num3'), range: [1, 6] }
+    { el: document.getElementById('num1'), range: [1,8] },
+    { el: document.getElementById('num2'), range: [1,8] },
+    { el: document.getElementById('num3'), range: [1,6] }
   ];
   inputs.forEach((item, idx) => {
     item.el.value = '';
     setTimeout(() => {
       item.el.value = rand(item.range[0], item.range[1]);
-      if (idx === inputs.length - 1) setTimeout(redirectIfReady, 1000);
-    }, idx * 1000);
+      if (idx === inputs.length - 1) setTimeout(redirectIfReady, 800);
+    }, idx * 800);
   });
 });
 
@@ -167,12 +214,17 @@ document.getElementById('goBtn').addEventListener('click', redirectIfReady);
 
 document.getElementById('showRitual').addEventListener('click', () => {
   const modal = document.getElementById('ritualModal');
-  modal.style.display = 'flex';
-  setTimeout(() => document.getElementById('step1').style.opacity = 1, 500);
-  setTimeout(() => document.getElementById('step2').style.opacity = 1, 1500);
-  setTimeout(() => document.getElementById('step3').style.opacity = 1, 2500);
-  setTimeout(() => document.getElementById('startBtn').style.display = 'inline-block', 3500);
+  modal.classList.add('show');
+  setTimeout(() => document.getElementById('step1').style.opacity = 1, 400);
+  setTimeout(() => document.getElementById('step2').style.opacity = 1, 1200);
+  setTimeout(() => document.getElementById('step3').style.opacity = 1, 2000);
+  setTimeout(() => document.getElementById('startBtn').style.display = 'inline-block', 2800);
+});
+
+document.getElementById('closeModal').addEventListener('click', () => {
+  document.getElementById('ritualModal').classList.remove('show');
 });
 </script>
+
 </body>
 </html>
