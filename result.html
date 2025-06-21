@@ -28,6 +28,12 @@
       color: #34495e;
       margin-bottom: 0.5em;
     }
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>卦象解读</title>
+  <link rel="stylesheet" href="static/style.css">
+  <style>
     .copy-btn {
       font-size: 1em;
       margin-left: 0.5em;
@@ -69,6 +75,10 @@
       line-height: 1.6em;
       margin-top: 0.4em;
     }
+    .nav-back:hover {
+      color: #2c3e50;
+      background: transparent;
+    }
   </style>
 </head>
 <body>
@@ -104,6 +114,9 @@
           document.getElementById('title').innerHTML = `
             ${data.gname} ${data.title} 变为 ${data.bgtitle} 卦
             <button class="copy-btn" onclick="copyText()" title="复制全部"></button>
+          `;
+          document.getElementById('title').innerHTML = `
+            ${data.gname} ${data.title} 变为 ${data.bgtitle} 卦 <button class="copy-btn" onclick="copyText()" title="复制全部"></button>
           `;
           document.getElementById('main').innerHTML = `
             <h2>主卦：${data.gname}</h2>
