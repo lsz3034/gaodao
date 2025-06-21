@@ -1,0 +1,35 @@
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background: #e9eff4;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 600px;
+  width: 90%;
+  background: #ffffff;
+  margin: 2em auto;
+  padding: 1.5em;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 0;
+  font-size: 2em;
+}
+
+h2, h3 {
+  color: #34495e;
+  margin-bottom: 0.5em;
+}
+
+p {
+  color: #2c3e50;
+  line-height: 1.6em;
+  margin-top: 0.4em;
+}
+#startBtn { display: none; margin-top: 1em; }
